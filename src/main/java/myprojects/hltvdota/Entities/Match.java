@@ -1,15 +1,13 @@
 package myprojects.hltvdota.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "matches")
 public class Match {
     @Id
+    @GeneratedValue
     private long id;
     @ManyToOne
     private Team team1;

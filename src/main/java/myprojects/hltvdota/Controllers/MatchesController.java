@@ -1,6 +1,8 @@
 package myprojects.hltvdota.Controllers;
+import myprojects.hltvdota.Entities.Match;
 import myprojects.hltvdota.Entities.Player;
 import myprojects.hltvdota.Entities.Team;
+import myprojects.hltvdota.repository.MatchRepository;
 import myprojects.hltvdota.repository.PlayerRepository;
 import myprojects.hltvdota.repository.TeamRepositoryJPA;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,13 @@ public class MatchesController {
     //private InMemoryTeamRepository repository;
     private final TeamRepositoryJPA teamRepository;
     private final PlayerRepository playerRepository;
+    private final MatchRepository matchRepository;
 
-    public MatchesController(TeamRepositoryJPA teamRepository, PlayerRepository playerRepository) {
+
+    public MatchesController(TeamRepositoryJPA teamRepository, PlayerRepository playerRepository, MatchRepository matchRepository) {
         this.teamRepository = teamRepository;
         this.playerRepository = playerRepository;
+        this.matchRepository = matchRepository;
     }
 
     @GetMapping("/")
@@ -28,8 +33,23 @@ public class MatchesController {
     }
 
     @GetMapping("/matches")
-    public String showMatches() {
-        return "matches";
+    public String showMatches(ModelMap model) {
+        model.put("matches",matchRepository.findAll());
+        return "matchList";
+    }
+    @GetMapping("/add-match")
+    public String addMatch() {
+        return "matchAddPage";
+    }
+
+    @PostMapping("/add-match")
+    public String addMatch(@RequestParam("team1") String team1,
+                           @RequestParam("team2") String team2) {
+        Match match = new Match();
+        match.setTeam1(teamRepository.findByName(team1));
+        match.setTeam2(teamRepository.findByName(team2));
+        matchRepository.save(match);
+        return "redirect:/matches";
     }
 
     @GetMapping("/teams")
