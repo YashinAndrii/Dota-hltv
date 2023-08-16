@@ -3,6 +3,7 @@ package myprojects.hltvdota.Entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity(name = "matches")
 public class Match {
@@ -15,7 +16,8 @@ public class Match {
     private Team team2;
     @ManyToOne
     private Tournament tournament;
-    private LocalDateTime time;
+    //private LocalDateTime time;
+    private Date time;
     private int[] score;
 
     public long getId() {
@@ -26,11 +28,11 @@ public class Match {
         this.id = id;
     }
 
-    public LocalDateTime getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

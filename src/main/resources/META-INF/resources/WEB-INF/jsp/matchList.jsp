@@ -8,47 +8,70 @@
     <link href="webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .team-logo {
-            width: 70px !important;/* Установите желаемую ширину */
+            width: 70px !important;
             height: auto !important;
+        }
+        table {
+            width: 100%;
+        }
+        table td {
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
 <body>
 <%@ include file="fragments/nav2.jsp" %>
 <div class="container">
-    <h2>All Matches</h2>
+    <h3 style="text-align: center">Upcoming matches</h3>
     <table class="table">
-        <thead>
-        <tr>
-            <th>Team 1</th>
-            <th>Score</th>
-            <th>Team 2</th>
-            <th>Time</th>
-        </tr>
-        </thead>
+        <thead></thead>
         <tbody>
-        <c:forEach items="${matches}" var="match">
-            <tr>
-                <td>
-                    <div class="nav-logo img">
-                        <a href="/teams/${match.team1.name}">
-                            <img class="team-logo" src="/images/teamLogos/${match.team1.logo}" alt="Team Logo">
-                        </a>
-                    </div>
-                </td>
-                <td>${match.score[0]} - ${match.score[1]}</td>
-                <td>
-                    <div class="nav-logo img">
-                        <a href="/teams/${match.team2.name}">
-                            <img class="team-logo" src="/images/teamLogos/${match.team2.logo}" alt="Team Logo">
-                        </a>
-                    </div>
-                </td>
-                <td>
-                    <fmt:formatDate value="${match.time}" pattern="yyyy-MM-dd HH:mm:ss" />
-                </td>
-            </tr>
-        </c:forEach>
+            <c:forEach items="${matches}" var="match" varStatus="loop">
+                <c:set var="prevMatch" value="${loop.index > 0 ? matches[loop.index - 1] : null}" />
+                <c:if test="${prevMatch == null || prevMatch.time.date != match.time.date}">
+                    <tr>
+                        <td colspan="4" style="font-weight: bold; background-color: #f2f2f2;">
+                            <fmt:formatDate value="${match.time}" pattern="d MMMM" />
+                        </td>
+                    </tr>
+                </c:if>
+                <tr>
+                    <td>
+                        <div class="logo-container">
+                            <a href="/teams/${match.team1.name}">
+                                <img class="team-logo" src="/images/teamLogos/${match.team1.logo}" alt="Team Logo">
+                            </a>
+                        </div>
+                    </td>
+                    <td><strong style="font-size: 20px;">${match.score[0]} - ${match.score[1]}</strong></td>
+                    <td>
+                        <div class="logo-container">
+                            <a href="/teams/${match.team2.name}">
+                                <img class="team-logo" src="/images/teamLogos/${match.team2.logo}" alt="Team Logo">
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${match.time <= currentTime}">
+                                <strong style="color: red;">Live</strong>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:formatDate value="${match.time}" pattern="HH:mm" />
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td><a href="/delete-match?id=${match.id}" class="btn btn-warning">Delete</a> </td>
+                    <td><a href="/update-match?id=${match.id}" class="btn btn-success">Update</a> </td>
+                </tr>
+            </c:forEach>
         </tbody>
     </table>
     <a href="/add-match" class="btn btn-success">Add Match</a>

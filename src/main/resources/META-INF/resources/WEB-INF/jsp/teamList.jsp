@@ -114,7 +114,7 @@
                                     </div>
                                 </td>
                             </c:forEach>
-                            <td><a href="/delete?name=${team.name}" class="btn btn-warning">Delete</a> </td>
+                            <td><a href="/delete-team?name=${team.name}" class="btn btn-warning">Delete</a> </td>
                         </tr>
                     </c:forEach>
                 </tbody>
