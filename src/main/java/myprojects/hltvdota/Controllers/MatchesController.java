@@ -48,11 +48,13 @@ public class MatchesController {
 
     @PostMapping("/add-match")
     public String addMatch(@RequestParam("team1") String team1,
-                           @RequestParam("team2") String team2) {
+                           @RequestParam("team2") String team2,
+                           @RequestParam("time") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Date time) {
         Match match = new Match();
         if(teamRepository.findByName(team1) != null && teamRepository.findByName(team2) != null && !team1.equals(team2)) {
             match.setTeam1(teamRepository.findByName(team1));
             match.setTeam2(teamRepository.findByName(team2));
+            match.setTime(time);
             matchRepository.save(match);
         }
         return "redirect:/matches";

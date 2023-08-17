@@ -1,4 +1,4 @@
-package myprojects.hltvdota;
+package myprojects.hltvdota.repository;
 
 import myprojects.hltvdota.Entities.Player;
 import myprojects.hltvdota.Entities.Team;

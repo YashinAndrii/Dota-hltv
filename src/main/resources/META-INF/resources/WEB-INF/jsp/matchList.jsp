@@ -68,8 +68,8 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td><a href="/delete-match?id=${match.id}" class="btn btn-warning">Delete</a> </td>
                     <td><a href="/update-match?id=${match.id}" class="btn btn-success">Update</a> </td>
+                    <td><a href="/delete-match?id=${match.id}" class="btn btn-warning">Delete</a> </td>
                 </tr>
             </c:forEach>
         </tbody>

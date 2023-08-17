@@ -16,7 +16,6 @@ public class Match {
     private Team team2;
     @ManyToOne
     private Tournament tournament;
-    //private LocalDateTime time;
     private Date time;
     private int[] score;
 
